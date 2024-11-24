@@ -31,7 +31,7 @@
             color: white;
         }
         #gameName {
-            font-size: 48px;
+            font-size: 40px;
             font-weight: bold;
             color: #333;
             margin-bottom: 20px;
@@ -54,14 +54,14 @@
 
     <div id="gameRules">
         <h2>Game Rules:</h2>
-        <p>Every time you click the Farm button, a new button will appear that you must chase and click.</p>
-        <p>Once you click the chased button, the option to click the Farm button will become available again.</p>
+        <p>Every time you click the FarmSkills button, a new button will appear that you must chase and click.</p>
+        <p>Once you click the chased button, the option to click the FarmSkills button will become available again.</p>
         <p><strong>Objective:</strong> Reach a score of 20 within 20 seconds.</p>
         <p>Players who meet the objective will earn 1 gold coin as a reward.</p>
     </div>
 
     <h1>Clicked: <span id="counter">0</span> times</h1>
-    <button id="clickButton">Click Me!</button>
+    <button id="clickButton">FarmSkills</button>
 
     <script>
         let count = 0;
@@ -108,7 +108,7 @@
 
             // Create the first random button
             randomButton = document.createElement('button');
-            randomButton.textContent = 'Click Me!';
+            randomButton.textContent = 'Catch Me!';
             randomButton.style.position = 'absolute';
             const { top, left } = getRandomPosition();
             randomButton.style.top = top;
