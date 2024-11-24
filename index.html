@@ -15,6 +15,13 @@
             font-family: Arial, sans-serif;
             position: relative;
             overflow: hidden;
+            /* Background image */
+            background-image: url('https://via.placeholder.com/1920x1080'); /* Replace with your desired image URL */
+            background-size: cover;
+            background-position: center;
+            /* Fallback gradient if image is not loaded */
+            background-color: #87CEEB; /* Light blue */
+            background: linear-gradient(135deg, #6B73FF, #000DFF);
         }
         h1, h2 {
             margin-bottom: 10px;
@@ -27,27 +34,29 @@
             border: none;
         }
         #clickButton {
-            background-color: blue;
+            background-color: green;
             color: white;
         }
         #timer {
-            font-size: 20px;
-            color: red;
+            font-size: 24px;
+            color: white;
             font-weight: bold;
             margin-bottom: 10px;
+            text-shadow: 1px 1px 2px black;
         }
         #gameName {
             font-size: 40px;
             font-weight: bold;
-            color: #333;
+            color: white;
             margin-bottom: 10px;
+            text-shadow: 2px 2px 4px black;
         }
         #gameRules {
             text-align: center;
             font-size: 16px;
             margin-bottom: 20px;
             padding: 15px;
-            background-color: #f8f8f8;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
             border-radius: 8px;
             border: 1px solid #ccc;
             width: 80%;
@@ -62,26 +71,27 @@
             font-weight: bold;
             color: red;
             display: none;
+            text-shadow: 2px 2px 4px black;
         }
     </style>
 </head>
 <body>
     <div id="timer">Timer - 20:00 sec.</div>
-    <div id="gameName">Catch me if you can</div>
+    <div id="gameName">Catch Me If You Can</div>
 
     <div id="gameRules">
         <h2>Game Rules:</h2>
         <p>Every time you click the FarmSkills button, a new button will appear that you must chase and click.</p>
         <p>Once you click the chased button, the option to click the FarmSkills button will become available again.</p>
-        <p><strong>Objective:</strong> Reach a score of 20 within 20 seconds.</p>
+        <p><strong>Objective:</strong> Reach a score of 15 within 20 seconds.</p>
         <p>Players who meet the objective will earn 1 gold coin as a reward.</p>
     </div>
 
     <h1>Clicked: <span id="counter">0</span> times</h1>
     <button id="clickButton">FarmSkills</button>
 
-    <div id="message">You Lose!</div>
-    
+    <div id="message"></div>
+
     <script>
         let count = 0;
         let gameActive = true;
@@ -90,6 +100,7 @@
         const counterDisplay = document.getElementById('counter');
         const button = document.getElementById('clickButton');
         const timerDisplay = document.getElementById('timer');
+        const messageDisplay = document.getElementById('message');
         let randomButton;
 
         // Function to format time as "seconds:milliseconds"
@@ -112,10 +123,15 @@
                     if (randomButton) randomButton.remove(); // Remove any random button
                     button.disabled = true; // Disable the main button
 
-                    // Show the "You Lose!" message if the player hasn't reached 20
-                    if (count < 20) {
-                        messageDisplay.style.display = "block";
+                    // Show the win or lose message
+                    if (count >= 15) {
+                        messageDisplay.textContent = "You Win!";
+                        messageDisplay.style.color = "green";
+                    } else {
+                        messageDisplay.textContent = "You Lose!";
+                        messageDisplay.style.color = "red";
                     }
+                    messageDisplay.style.display = "block";
                 }
             }, 10); // Update timer every 10ms
         }
