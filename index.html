@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Button Click Counter</title>
+    <title>Catch Me If You Can</title>
     <style>
         body {
             display: flex;
@@ -16,30 +16,36 @@
             position: relative;
             overflow: hidden;
         }
-        h1 {
-            margin-bottom: 20px;
+        h1, h2 {
+            margin-bottom: 10px;
         }
         button {
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
-            border-radius: 12px; /* Makes corners rounded */
-            border: none; /* Removes the default border */
+            border-radius: 12px;
+            border: none;
         }
         #clickButton {
             background-color: blue;
             color: white;
         }
+        #timer {
+            font-size: 24px;
+            color: red;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
         #gameName {
-            font-size: 40px;
+            font-size: 48px;
             font-weight: bold;
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         #gameRules {
             text-align: center;
             font-size: 18px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             padding: 15px;
             background-color: #f8f8f8;
             border-radius: 8px;
@@ -50,12 +56,13 @@
     </style>
 </head>
 <body>
+    <div id="timer">Timer - 20:00 sec.</div>
     <div id="gameName">Catch me if you can</div>
 
     <div id="gameRules">
         <h2>Game Rules:</h2>
-        <p>Every time you click the FarmSkills button, a new button will appear that you must chase and click.</p>
-        <p>Once you click the chased button, the option to click the FarmSkills button will become available again.</p>
+        <p>Every time you click the Farm button, a new button will appear that you must chase and click.</p>
+        <p>Once you click the chased button, the option to click the Farm button will become available again.</p>
         <p><strong>Objective:</strong> Reach a score of 20 within 20 seconds.</p>
         <p>Players who meet the objective will earn 1 gold coin as a reward.</p>
     </div>
@@ -65,9 +72,36 @@
 
     <script>
         let count = 0;
+        let gameActive = true;
+        let timerStarted = false; // Tracks if the timer has started
+        let timerMilliseconds = 20000; // 20 seconds in milliseconds
         const counterDisplay = document.getElementById('counter');
         const button = document.getElementById('clickButton');
+        const timerDisplay = document.getElementById('timer');
         let randomButton;
+
+        // Function to format time as "seconds:milliseconds"
+        function formatTime(ms) {
+            const seconds = Math.floor(ms / 1000);
+            const milliseconds = Math.floor((ms % 1000) / 10); // Show 2 digits for milliseconds
+            return `Timer - ${seconds}:${milliseconds.toString().padStart(2, '0')} sec.`;
+        }
+
+        // Function to start the timer
+        function startTimer() {
+            const timerInterval = setInterval(() => {
+                if (timerMilliseconds > 0) {
+                    timerMilliseconds -= 10; // Decrease timer by 10ms
+                    timerDisplay.textContent = formatTime(timerMilliseconds);
+                } else {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Time Up!";
+                    gameActive = false;
+                    if (randomButton) randomButton.remove(); // Remove any random button
+                    button.disabled = true; // Disable the main button
+                }
+            }, 10); // Update timer every 10ms
+        }
 
         // Function to generate a random color
         function getRandomColor() {
@@ -82,12 +116,12 @@
         // Function to generate a random position
         function getRandomPosition() {
             return {
-                top: `${Math.random() * 90}vh`,   // Random vertical position
-                left: `${Math.random() * 90}vw`   // Random horizontal position
+                top: `${Math.random() * 90}vh`,
+                left: `${Math.random() * 90}vw`
             };
         }
 
-        // Function to move the random button to a new position
+        // Function to move the random button
         function moveRandomButton() {
             const { top, left } = getRandomPosition();
             randomButton.style.top = top;
@@ -100,6 +134,13 @@
         }
 
         button.addEventListener('click', () => {
+            if (!gameActive) return; // Stop if the game is inactive
+
+            if (!timerStarted) {
+                timerStarted = true;
+                startTimer(); // Start the timer on the first click
+            }
+
             count++;
             counterDisplay.textContent = count;
 
@@ -113,26 +154,29 @@
             const { top, left } = getRandomPosition();
             randomButton.style.top = top;
             randomButton.style.left = left;
-            randomButton.style.backgroundColor = getRandomColor(); // Set random color for new button
-
-            // Add border-radius for rounded corners on the random button as well
-            randomButton.style.borderRadius = '12px'; // Make random button corners rounded
+            randomButton.style.backgroundColor = getRandomColor();
+            randomButton.style.borderRadius = '12px';
 
             // Append the random button to the body
             document.body.appendChild(randomButton);
 
             // Add event listener to remove the button when clicked and enable the main button
             randomButton.addEventListener('click', () => {
+                if (!gameActive) return; // Stop if the game is inactive
                 randomButton.remove();
                 toggleMainButtonState(false);
             });
 
-            // Start the loop to move the button every 1 second
+            // Start a loop to move the button every 1 second
             const moveButtonInterval = setInterval(() => {
+                if (!gameActive || !randomButton) {
+                    clearInterval(moveButtonInterval);
+                    return;
+                }
                 moveRandomButton();
             }, 700);
 
-            // After the random button is removed, clear the move interval
+            // Clear the interval after the button is clicked
             randomButton.addEventListener('click', () => {
                 clearInterval(moveButtonInterval);
             });
