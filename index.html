@@ -23,6 +23,8 @@
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
+            border-radius: 12px; /* Makes corners rounded */
+            border: none; /* Removes the default border */
         }
         #clickButton {
             background-color: blue;
@@ -38,6 +40,7 @@
         let count = 0;
         const counterDisplay = document.getElementById('counter');
         const button = document.getElementById('clickButton');
+        let randomButton;
 
         // Function to generate a random color
         function getRandomColor() {
@@ -47,6 +50,21 @@
                 color += letters[Math.floor(Math.random() * 16)];
             }
             return color;
+        }
+
+        // Function to generate a random position
+        function getRandomPosition() {
+            return {
+                top: `${Math.random() * 90}vh`,   // Random vertical position
+                left: `${Math.random() * 90}vw`   // Random horizontal position
+            };
+        }
+
+        // Function to move the random button to a new position
+        function moveRandomButton() {
+            const { top, left } = getRandomPosition();
+            randomButton.style.top = top;
+            randomButton.style.left = left;
         }
 
         // Function to enable or disable the main button
@@ -61,13 +79,17 @@
             // Disable the main button
             toggleMainButtonState(true);
 
-            // Create a new button at a random position
-            const randomButton = document.createElement('button');
+            // Create the first random button
+            randomButton = document.createElement('button');
             randomButton.textContent = 'Click Me!';
             randomButton.style.position = 'absolute';
-            randomButton.style.top = `${Math.random() * 90}vh`; // Random vertical position
-            randomButton.style.left = `${Math.random() * 90}vw`; // Random horizontal position
+            const { top, left } = getRandomPosition();
+            randomButton.style.top = top;
+            randomButton.style.left = left;
             randomButton.style.backgroundColor = getRandomColor(); // Set random color for new button
+
+            // Add border-radius for rounded corners on the random button as well
+            randomButton.style.borderRadius = '12px'; // Make random button corners rounded
 
             // Append the random button to the body
             document.body.appendChild(randomButton);
@@ -75,8 +97,17 @@
             // Add event listener to remove the button when clicked and enable the main button
             randomButton.addEventListener('click', () => {
                 randomButton.remove();
-                // Enable the main button after the random button is removed
                 toggleMainButtonState(false);
+            });
+
+            // Start the loop to move the button every 1 second
+            const moveButtonInterval = setInterval(() => {
+                moveRandomButton();
+            }, 1000);
+
+            // After the random button is removed, clear the move interval
+            randomButton.addEventListener('click', () => {
+                clearInterval(moveButtonInterval);
             });
         });
     </script>
