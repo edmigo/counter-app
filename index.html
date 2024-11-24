@@ -80,7 +80,7 @@
     <h1>Clicked: <span id="counter">0</span> times</h1>
     <button id="clickButton">FarmSkills</button>
 
-    <div id="message"></div>
+    <div id="message">You Lose!</div>
     
     <script>
         let count = 0;
@@ -112,15 +112,11 @@
                     if (randomButton) randomButton.remove(); // Remove any random button
                     button.disabled = true; // Disable the main button
 
-                    // Show the win or lose message
-                    if (count >= 20) {
-                        messageDisplay.textContent = "You Win!";
-                        messageDisplay.style.color = "green";
-                    } else {
-                        messageDisplay.textContent = "You Lose!";
-                        messageDisplay.style.color = "red";
+                    // Show the "You Lose!" message if the player hasn't reached 20
+                    if (count < 20) {
+                        messageDisplay.style.display = "block";
                     }
-                    messageDisplay.style.display = "block";                }
+                }
             }, 10); // Update timer every 10ms
         }
 
