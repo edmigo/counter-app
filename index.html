@@ -110,11 +110,15 @@
                     if (randomButton) randomButton.remove(); // Remove any random button
                     button.disabled = true; // Disable the main button
 
-                    // Show the "You Lose!" message if the player hasn't reached 20
-                    if (count < 20) {
-                        messageDisplay.style.display = "block";
+                    // Show the win or lose message
+                    if (count >= 20) {
+                        messageDisplay.textContent = "You Win!";
+                        messageDisplay.style.color = "green";
+                    } else {
+                        messageDisplay.textContent = "You Lose!";
+                        messageDisplay.style.color = "red";
                     }
-                }
+                    messageDisplay.style.display = "block";                }
             }, 10); // Update timer every 10ms
         }
 
