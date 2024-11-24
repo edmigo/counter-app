@@ -30,9 +30,36 @@
             background-color: blue;
             color: white;
         }
+        #gameName {
+            font-size: 48px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        #gameRules {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f8f8f8;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            width: 80%;
+            max-width: 600px;
+        }
     </style>
 </head>
 <body>
+    <div id="gameName">Catch me if you can</div>
+
+    <div id="gameRules">
+        <h2>Game Rules:</h2>
+        <p>Every time you click the Farm button, a new button will appear that you must chase and click.</p>
+        <p>Once you click the chased button, the option to click the Farm button will become available again.</p>
+        <p><strong>Objective:</strong> Reach a score of 20 within 20 seconds.</p>
+        <p>Players who meet the objective will earn 1 gold coin as a reward.</p>
+    </div>
+
     <h1>Clicked: <span id="counter">0</span> times</h1>
     <button id="clickButton">Click Me!</button>
 
@@ -103,7 +130,7 @@
             // Start the loop to move the button every 1 second
             const moveButtonInterval = setInterval(() => {
                 moveRandomButton();
-            }, 1000);
+            }, 700);
 
             // After the random button is removed, clear the move interval
             randomButton.addEventListener('click', () => {
