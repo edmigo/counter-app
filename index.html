@@ -53,6 +53,16 @@
             width: 80%;
             max-width: 600px;
         }
+        #message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            font-weight: bold;
+            color: red;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -99,6 +109,11 @@
                     gameActive = false;
                     if (randomButton) randomButton.remove(); // Remove any random button
                     button.disabled = true; // Disable the main button
+
+                    // Show the "You Lose!" message if the player hasn't reached 20
+                    if (count < 20) {
+                        messageDisplay.style.display = "block";
+                    }
                 }
             }, 10); // Update timer every 10ms
         }
